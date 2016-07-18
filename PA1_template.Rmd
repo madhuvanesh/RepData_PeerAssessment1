@@ -8,7 +8,7 @@ output:
 
 ## Loading and preprocessing the data
 
-```{r loaddata}
+```{r loaddata, echo=TRUE}
 # NOTE: activity.csv must be in the same folder as where this Rmd file is run from
 # Load the dplyr library since we will be using the group_by and summary functions
 # Load activity.csv using read.csv and assign to a variable activities
@@ -18,7 +18,7 @@ activities <- read.csv("activity.csv")
 
 ## What is mean total number of steps taken per day?
 
-```{r stepsperday}
+```{r stepsperday, echo=TRUE}
 # use group_by to group the data by date and then use summary function with sum() to calculate 
 # total number of steps take per day
 bydate <- group_by(activities,date)
@@ -36,7 +36,7 @@ cat("mean: ",mean,"median: ", median)
 ## What is the average daily activity pattern?
 ### Average daily pattern:
 
-```{r avgdailypattern}
+```{r avgdailypattern, echo=TRUE}
 # use group_by to group by the 5 minute interval and then use summarize to calculate mean of steps accross all days for each of the 5 minute intervals
 byinterval <- group_by(activities,interval)
 meanaccrossdays <- summarize(byinterval,Mean=round(mean(steps,na.rm=TRUE)))
@@ -55,7 +55,7 @@ text(maxavgsteps$interval+5,maxavgsteps$Mean/2,label)
 
 
 ## Imputing missing values
-```{r imputemissingvalues}
+```{r imputemissingvalues, echo=TRUE}
 # Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 missingvalues <- filter(activities,is.na(steps))
 cat("# of Missing Values: ",dim(missingvalues)[1])
@@ -84,7 +84,7 @@ cat("mean: ",mean,"median: ", median)
 
 ## Are there differences in activity patterns between weekdays and weekends?
 ### Yes, there are difference in activity patterns between weekdays and weekends as you can see below 
-```{r weekdayweekend}
+```{r weekdayweekend, echo=TRUE}
 activities$day <- weekdays(as.Date(activities$date))
 weekend <- filter(activities,grepl("Saturday",activities$day) | grepl("Sunday",activities$day))
 weekdays <- filter(activities,!grepl("Saturday",activities$day) & !grepl("Sunday",activities$day))
