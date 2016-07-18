@@ -56,7 +56,7 @@ maxavgsteps <- filter(meanaccrossdays,Mean == max(Mean))
 # now draw the vertical line to show the maximum number of steps
 abline(v=maxavgsteps$interval)
 # display the max
-label <- paste("Max:", maxavgsteps$Mean)
+label <- paste("Max avg steps:", maxavgsteps$Mean, "@ interval:", maxavgsteps$interval )
 text(maxavgsteps$interval+5,maxavgsteps$Mean/2,label)
 ```
 
