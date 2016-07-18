@@ -9,7 +9,8 @@ output:
 ## Loading and preprocessing the data
 
 ```{r loaddata, echo=TRUE}
-# NOTE: activity.csv must be in the same folder as where this Rmd file is run from
+# NOTE1: activity.csv must be in the same folder as where this Rmd file is run from
+# NOTE2: This was developed in RStudio where dplyr package is already installed. 
 # Load the dplyr library since we will be using the group_by and summary functions
 # Load activity.csv using read.csv and assign to a variable activities
 library("dplyr")
@@ -40,10 +41,8 @@ cat("mean: ",mean,"median: ", median)
 # use group_by to group by the 5 minute interval and then use summarize to calculate mean of steps accross all days for each of the 5 minute intervals
 byinterval <- group_by(activities,interval)
 meanaccrossdays <- summarize(byinterval,Mean=round(mean(steps,na.rm=TRUE)))
-# use plot on meanandmedian variable to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-# first use xaxt="n", then use axis to specify how granular the x axis labels should be
+# use plot on meanandmedian to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 plot(meanaccrossdays$interval,meanaccrossdays$Mean,type="l",xlab="interval",ylab="Number of steps",main="Mean per interval accross days")
-#axis(1, xaxp=c(0,2355,287))
 # use filter to return the row that is the maximum number of steps
 maxavgsteps <- filter(meanaccrossdays,Mean == max(Mean))
 # now draw the vertical line to show the maximum number of steps
@@ -71,7 +70,7 @@ cat("# of Missing Values: ",dim(missingvaluesafter)[1])
 
 bydate <- group_by(activities,date)
 stepsperday <- summarize(bydate,StepsPerDay=sum(steps, na.rm=TRUE))
-# Here we will use histogram function to show steps per day over all of the days in the data set with missing values imputer
+# Here we will use histogram function to show steps per day over all of the days in the data set with missing values imputed
 hist(stepsperday$StepsPerDay,col="blue",main="Steps per day - Missing values imputed",xlab="Steps per day")
 # calculate mean and median of the total number of steps taken per day
 mean <- mean(stepsperday$StepsPerDay)
@@ -91,16 +90,11 @@ weekdays <- filter(activities,!grepl("Saturday",activities$day) & !grepl("Sunday
 
 byinterval_weekdays <- group_by(weekdays,interval)
 meanaccrossweekdays <- summarize(byinterval_weekdays,Mean=round(mean(steps,na.rm=TRUE)))
-# use plot on meanandmedian variable to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-# first use xaxt="n", then use axis to specify how granular the x axis labels should be
+# use plot on meanaccrossweekdays to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all week days (y-axis)
 plot(meanaccrossweekdays$interval,meanaccrossweekdays$Mean,type="l",xlab="interval",ylab="Number of steps",main="Mean per interval accoss weekdays")
-#axis(1,  xaxp=c(0,2355,287))
 
 byinterval_weekend <- group_by(weekend,interval)
 meanoverweekend <- summarize(byinterval_weekend,Mean=round(mean(steps,na.rm=TRUE)))
-# use plot on meanandmedian variable to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-# first use xaxt="n", then use axis to specify how granular the x axis labels should be
+# use plot on meanoverweekend  to generate a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged over weekend days (y-axis)
 plot(meanoverweekend$interval,meanoverweekend$Mean,type="l",xlab="interval",ylab="Number of steps",main="Mean per interval over weekend")
-#axis(1,  xaxp=c(0,2355,287))
-
 ```
